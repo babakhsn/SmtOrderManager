@@ -1,0 +1,11 @@
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\bin\Debug\net9.0\SmtOrderManager.Domain.deps.json
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\bin\Debug\net9.0\SmtOrderManager.Domain.dll
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\bin\Debug\net9.0\SmtOrderManager.Domain.pdb
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.AssemblyInfoInputs.cache
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.AssemblyInfo.cs
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.csproj.CoreCompileInputs.cache
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.dll
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\refint\SmtOrderManager.Domain.dll
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\SmtOrderManager.Domain.pdb
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Domain\obj\Debug\net9.0\ref\SmtOrderManager.Domain.dll

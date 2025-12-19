@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "SmtOrderManager.Infrastructure/1.0.0": {
+        "dependencies": {
+          "SmtOrderManager.Application": "1.0.0",
+          "SmtOrderManager.Domain": "1.0.0"
+        },
+        "runtime": {
+          "SmtOrderManager.Infrastructure.dll": {}
+        }
+      },
+      "SmtOrderManager.Application/1.0.0": {
+        "dependencies": {
+          "SmtOrderManager.Domain": "1.0.0"
+        },
+        "runtime": {
+          "SmtOrderManager.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SmtOrderManager.Domain/1.0.0": {
+        "runtime": {
+          "SmtOrderManager.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SmtOrderManager.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SmtOrderManager.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SmtOrderManager.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
