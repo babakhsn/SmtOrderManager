@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\babak\\source\\repos\\SmtOrderManager\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|C:\\Users\\babak\\source\\repos\\SmtOrderManager\\.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|solutionrelative:.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2AADA032-EA6D-4499-AF84-F547B7D635EF}|SmtOrderManager.Api\\SmtOrderManager.Api.csproj|c:\\users\\babak\\source\\repos\\smtordermanager\\smtordermanager.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2AADA032-EA6D-4499-AF84-F547B7D635EF}|SmtOrderManager.Api\\SmtOrderManager.Api.csproj|solutionrelative:smtordermanager.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,17 +18,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": ".editorconfig",
+              "DocumentMoniker": "C:\\Users\\babak\\source\\repos\\SmtOrderManager\\.editorconfig",
+              "RelativeDocumentMoniker": ".editorconfig",
+              "ToolTip": "C:\\Users\\babak\\source\\repos\\SmtOrderManager\\.editorconfig",
+              "RelativeToolTip": ".editorconfig",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAYwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-12-19T21:00:10.073Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\babak\\source\\repos\\SmtOrderManager\\SmtOrderManager.Api\\Program.cs",
               "RelativeDocumentMoniker": "SmtOrderManager.Api\\Program.cs",
               "ToolTip": "C:\\Users\\babak\\source\\repos\\SmtOrderManager\\SmtOrderManager.Api\\Program.cs",
               "RelativeToolTip": "SmtOrderManager.Api\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-19T20:22:52.505Z",
               "EditorCaption": ""
