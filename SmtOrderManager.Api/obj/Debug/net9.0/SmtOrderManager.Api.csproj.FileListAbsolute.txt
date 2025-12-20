@@ -39,3 +39,4 @@ C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\obj\Debug\net9.0
 C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\obj\Debug\net9.0\SmtOrderManager.Api.pdb
 C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\obj\Debug\net9.0\SmtOrderManager.Api.genruntimeconfig.cache
 C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\obj\Debug\net9.0\ref\SmtOrderManager.Api.dll
+C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll

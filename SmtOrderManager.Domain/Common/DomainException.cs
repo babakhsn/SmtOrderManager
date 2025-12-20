@@ -1,6 +1,6 @@
-﻿namespace SmtOrderManager.Domain.Common;
+namespace SmtOrderManager.Domain.Common;
 
-public sealed class DomainException : Exception
+public class DomainException : Exception
 {
     public DomainException(string message) : base(message) { }
 }

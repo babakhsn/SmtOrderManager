@@ -1,5 +1,6 @@
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
+using SmtOrderManager.Domain.Common;
 using SmtOrderManager.Domain.Components;
 
 namespace SmtOrderManager.Infrastructure.InMemory;
@@ -18,9 +19,7 @@ public sealed class InMemoryComponentService : IComponentService
     }
 
     public Task<ComponentDto?> GetByIdAsync(Guid id, CancellationToken ct)
-    {
-        return Task.FromResult(_store.Components.TryGetValue(id, out var c) ? Mapping.ToDto(c) : null);
-    }
+        => Task.FromResult(_store.Components.TryGetValue(id, out var c) ? Mapping.ToDto(c) : null);
 
     public Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, CancellationToken ct)
     {
@@ -34,14 +33,12 @@ public sealed class InMemoryComponentService : IComponentService
     public Task<ComponentDto> UpdateAsync(Guid id, UpdateComponentRequest request, CancellationToken ct)
     {
         if (!_store.Components.TryGetValue(id, out var entity))
-            throw new InvalidOperationException("Component not found.");
+            throw new NotFoundException("Component not found.");
 
         entity.Update(request.Name, request.Description, request.Quantity);
         return Task.FromResult(Mapping.ToDto(entity));
     }
 
     public Task<bool> DeleteAsync(Guid id, CancellationToken ct)
-    {
-        return Task.FromResult(_store.Components.TryRemove(id, out _));
-    }
+        => Task.FromResult(_store.Components.TryRemove(id, out _));
 }
