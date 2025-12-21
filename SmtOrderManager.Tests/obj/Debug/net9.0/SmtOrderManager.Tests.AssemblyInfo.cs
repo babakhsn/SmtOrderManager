@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmtOrderManager.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6e3e17bd5ceb6308240d11317c651814bde8b79")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0585c9adfac2096df5d3a0266a9cdf5b0f240c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmtOrderManager.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmtOrderManager.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Phase 1: in-memory infrastructure so the API runs now
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Middleware registration
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
