@@ -11,3 +11,56 @@
 2025-12-21 12:29:44.011 +01:00 [INF] Board created. BoardId="91109456-bceb-4592-8c40-2d376f0751a6" Name=PCB 2
 2025-12-21 12:29:44.019 +01:00 [INF] HTTP POST /api/boards responded 200 in 693.5522 ms
 2025-12-21 12:37:18.644 +01:00 [INF] Application is shutting down...
+2025-12-21 12:44:07.239 +01:00 [INF] Now listening on: http://localhost:5298
+2025-12-21 12:44:07.278 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-21 12:44:07.280 +01:00 [INF] Hosting environment: Development
+2025-12-21 12:44:07.283 +01:00 [INF] Content root path: C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api
+2025-12-21 12:44:11.476 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-12-21 12:44:11.489 +01:00 [INF] HTTP GET / responded 404 in 48.7044 ms
+2025-12-21 12:44:17.027 +01:00 [INF] HTTP GET /swagger/index.html responded 200 in 180.7612 ms
+2025-12-21 12:44:17.402 +01:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 260.3191 ms
+2025-12-21 12:44:38.247 +01:00 [WRN] The foreign key property 'OrderBoard.BoardId1' was created in shadow state because a conflicting property with the simple name 'BoardId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-12-21 12:44:39.379 +01:00 [INF] HTTP GET /api/orders responded 200 in 2231.2785 ms
+2025-12-21 12:44:55.180 +01:00 [ERR] HTTP GET /api/orders/3fa85f64-5717-4562-b3fc-2c963f66afa6/download responded 500 in 212.1033 ms
+SmtOrderManager.Domain.Common.NotFoundException: Order not found.
+   at SmtOrderManager.Infrastructure.Services.EfOrderService.DownloadAsync(Guid orderId, CancellationToken ct) in C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Infrastructure\Services\EfOrderService.cs:line 139
+   at SmtOrderManager.Api.Controllers.OrdersController.Download(Guid id, CancellationToken ct) in C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\Controllers\OrdersController.cs:line 49
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-21 12:44:55.274 +01:00 [ERR] Unhandled exception. TraceId=00-00729e693ad98a8fb34a7d0b630d26e1-25cd5d3186c83635-00
+SmtOrderManager.Domain.Common.NotFoundException: Order not found.
+   at SmtOrderManager.Infrastructure.Services.EfOrderService.DownloadAsync(Guid orderId, CancellationToken ct) in C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Infrastructure\Services\EfOrderService.cs:line 139
+   at SmtOrderManager.Api.Controllers.OrdersController.Download(Guid id, CancellationToken ct) in C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\Controllers\OrdersController.cs:line 49
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SmtOrderManager.Api.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api\Middleware\ExceptionHandlingMiddleware.cs:line 22
+2025-12-21 12:45:30.084 +01:00 [INF] Order downloaded (production payload). OrderId="05408d21-3130-49f6-8ac3-f6518d13aa43" Boards=1 BomLines=0 FileName=order_05408d21-3130-49f6-8ac3-f6518d13aa43_20251221_114530_utc.json
+2025-12-21 12:45:30.112 +01:00 [INF] HTTP GET /api/orders/05408d21-3130-49f6-8ac3-f6518d13aa43/download responded 200 in 250.1839 ms
+2025-12-21 12:47:01.302 +01:00 [INF] HTTP GET /api/components responded 200 in 33.3114 ms
+2025-12-21 12:47:24.822 +01:00 [INF] Component linked to board. BoardId="49fd4c98-82c9-4daf-a62c-1d22e490ac7d" ComponentId="2adc1cf1-0588-4830-b8ff-a082d3a2a99d" PlacementQuantity=2
+2025-12-21 12:47:24.833 +01:00 [INF] HTTP POST /api/boards/49fd4c98-82c9-4daf-a62c-1d22e490ac7d/components responded 200 in 479.7946 ms
+2025-12-21 12:47:37.232 +01:00 [INF] Order downloaded (production payload). OrderId="05408d21-3130-49f6-8ac3-f6518d13aa43" Boards=1 BomLines=1 FileName=order_05408d21-3130-49f6-8ac3-f6518d13aa43_20251221_114737_utc.json
+2025-12-21 12:47:37.235 +01:00 [INF] HTTP GET /api/orders/05408d21-3130-49f6-8ac3-f6518d13aa43/download responded 200 in 18.7771 ms
+2025-12-21 12:48:08.362 +01:00 [INF] Application is shutting down...

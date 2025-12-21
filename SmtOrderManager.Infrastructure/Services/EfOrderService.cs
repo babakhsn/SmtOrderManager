@@ -130,6 +130,7 @@ public sealed class EfOrderService : IOrderService
 
     public async Task<DownloadPayload> DownloadAsync(Guid orderId, CancellationToken ct)
     {
+        // Load order + linked boards
         var order = await _db.Orders
             .AsNoTracking()
             .Include(x => x.BoardLinks)
@@ -137,22 +138,88 @@ public sealed class EfOrderService : IOrderService
 
         if (order is null) throw new NotFoundException("Order not found.");
 
+        var boardIds = order.BoardLinks.Select(x => x.BoardId).Distinct().ToList();
+
+        // Load boards + their component placements
+        var boards = await _db.Boards
+            .AsNoTracking()
+            .Where(b => boardIds.Contains(b.Id))
+            .Include(b => b.ComponentLinks)
+            .ToListAsync(ct);
+
+        // Load all component ids referenced by placements
+        var componentIds = boards
+            .SelectMany(b => b.ComponentLinks.Select(p => p.ComponentId))
+            .Distinct()
+            .ToList();
+
+        var components = await _db.Components
+            .AsNoTracking()
+            .Where(c => componentIds.Contains(c.Id))
+            .ToDictionaryAsync(c => c.Id, ct);
+
         var downloadedAt = _time.UtcNow;
 
-        var model = new
-        {
-            DownloadedAtUtc = downloadedAt,
-            Order = ToDto(order)
-        };
+        // Build download DTOs
+        var orderDto = new OrderDownloadDto(order.Id, order.Name, order.Description, order.OrderDate);
 
-        var json = _json.Serialize(model);
+        var boardDtos = boards.Select(b =>
+        {
+            var placements = b.ComponentLinks.Select(p =>
+            {
+                components.TryGetValue(p.ComponentId, out var comp);
+
+                // If a component was deleted after linkage, keep the ID but mark unknown.
+                var name = comp?.Name ?? "UNKNOWN";
+                var desc = comp?.Description ?? string.Empty;
+
+                return new BoardPlacementDto(
+                    p.ComponentId,
+                    name,
+                    desc,
+                    p.PlacementQuantity
+                );
+            }).ToList();
+
+            return new BoardDownloadDto(
+                b.Id,
+                b.Name,
+                b.Description,
+                b.Length,
+                b.Width,
+                placements
+            );
+        }).ToList();
+
+        // Compute BOM totals across all boards (sum placement quantities)
+        var bom = boardDtos
+            .SelectMany(b => b.Placements)
+            .GroupBy(p => new { p.ComponentId, p.ComponentName })
+            .Select(g => new BomLineDto(
+                g.Key.ComponentId,
+                g.Key.ComponentName,
+                g.Sum(x => x.PlacementQuantity)
+            ))
+            .OrderBy(x => x.ComponentName)
+            .ToList();
+
+        var downloadModel = new ProductionOrderDownloadDto(
+            downloadedAt,
+            orderDto,
+            boardDtos,
+            bom
+        );
+
+        var json = _json.Serialize(downloadModel);
         var content = Encoding.UTF8.GetBytes(json);
         var fileName = $"order_{order.Id}_{downloadedAt:yyyyMMdd_HHmmss}_utc.json";
 
-        _logger.LogInformation("Order downloaded (simulated). OrderId={OrderId} FileName={FileName}", orderId, fileName);
+        _logger.LogInformation("Order downloaded (production payload). OrderId={OrderId} Boards={BoardCount} BomLines={BomLines} FileName={FileName}",
+            orderId, boardDtos.Count, bom.Count, fileName);
 
         return new DownloadPayload(fileName, "application/json", content);
     }
+
 
     private static OrderDto ToDto(Order o) =>
         new(
