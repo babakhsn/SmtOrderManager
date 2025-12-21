@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
 using SmtOrderManager.Domain.Boards;
@@ -10,14 +11,21 @@ namespace SmtOrderManager.Infrastructure.Services;
 public sealed class EfBoardService : IBoardService
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<EfBoardService> _logger;
 
-    public EfBoardService(AppDbContext db) => _db = db;
+    public EfBoardService(AppDbContext db, ILogger<EfBoardService> logger)
+    {
+        _db = db;
+        _logger = logger;
+    }
 
     public async Task<BoardDto> CreateAsync(CreateBoardRequest request, CancellationToken ct)
     {
         var entity = new Board(request.Name, request.Description, request.Length, request.Width);
         _db.Boards.Add(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Board created. BoardId={BoardId} Name={Name}", entity.Id, entity.Name);
 
         return ToDto(entity);
     }
@@ -57,6 +65,8 @@ public sealed class EfBoardService : IBoardService
         entity.Update(request.Name, request.Description, request.Length, request.Width);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation("Board updated. BoardId={BoardId}", entity.Id);
+
         return ToDto(entity);
     }
 
@@ -67,6 +77,9 @@ public sealed class EfBoardService : IBoardService
 
         _db.Boards.Remove(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Board deleted. BoardId={BoardId}", id);
+
         return true;
     }
 
@@ -84,6 +97,11 @@ public sealed class EfBoardService : IBoardService
         board.AddComponent(request.ComponentId, request.PlacementQuantity);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation(
+            "Component linked to board. BoardId={BoardId} ComponentId={ComponentId} PlacementQuantity={PlacementQuantity}",
+            boardId, request.ComponentId, request.PlacementQuantity
+        );
+
         return ToDto(board);
     }
 
@@ -97,6 +115,11 @@ public sealed class EfBoardService : IBoardService
 
         board.RemoveComponent(componentId);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation(
+            "Component unlinked from board. BoardId={BoardId} ComponentId={ComponentId}",
+            boardId, componentId
+        );
 
         return ToDto(board);
     }

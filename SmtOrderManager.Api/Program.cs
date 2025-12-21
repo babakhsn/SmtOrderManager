@@ -1,15 +1,22 @@
 using SmtOrderManager.Infrastructure.DependencyInjection;
 using SmtOrderManager.Api.Middleware;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Serilog configuration (reads from appsettings.json / appsettings.Development.json)
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
 
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Phase 1: in-memory infrastructure so the API runs now
+// Infrastructure (EF + SQLite)
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Middleware registration
@@ -21,13 +28,10 @@ var app = builder.Build();
 // Exception handling should be early in the pipeline
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Basic request logging (later replaced/enhanced with Serilog request logging)
-app.Use(async (ctx, next) =>
+// Serilog request logging (replaces the custom inline request logging middleware)
+app.UseSerilogRequestLogging(options =>
 {
-    var logger = ctx.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("RequestLogging");
-    logger.LogInformation("HTTP {Method} {Path}", ctx.Request.Method, ctx.Request.Path);
-    await next();
-    logger.LogInformation("HTTP {Method} {Path} -> {StatusCode}", ctx.Request.Method, ctx.Request.Path, ctx.Response.StatusCode);
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
 });
 
 

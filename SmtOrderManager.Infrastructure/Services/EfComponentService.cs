@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
 using SmtOrderManager.Domain.Common;
@@ -10,14 +11,22 @@ namespace SmtOrderManager.Infrastructure.Services;
 public sealed class EfComponentService : IComponentService
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<EfComponentService> _logger;
 
-    public EfComponentService(AppDbContext db) => _db = db;
+    public EfComponentService(AppDbContext db, ILogger<EfComponentService> logger)
+    {
+        _db = db;
+        _logger = logger;
+    }
 
     public async Task<ComponentDto> CreateAsync(CreateComponentRequest request, CancellationToken ct)
     {
         var entity = new Component(request.Name, request.Description, request.Quantity);
         _db.Components.Add(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Component created. ComponentId={ComponentId} Name={Name}", entity.Id, entity.Name);
+
         return new ComponentDto(entity.Id, entity.Name, entity.Description, entity.Quantity);
     }
 
@@ -45,6 +54,8 @@ public sealed class EfComponentService : IComponentService
         entity.Update(request.Name, request.Description, request.Quantity);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation("Component updated. ComponentId={ComponentId}", entity.Id);
+
         return new ComponentDto(entity.Id, entity.Name, entity.Description, entity.Quantity);
     }
 
@@ -55,6 +66,10 @@ public sealed class EfComponentService : IComponentService
 
         _db.Components.Remove(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Component deleted. ComponentId={ComponentId}", id);
+
+
         return true;
     }
 }

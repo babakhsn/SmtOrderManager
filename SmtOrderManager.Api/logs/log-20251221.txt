@@ -1,0 +1,13 @@
+2025-12-21 12:25:59.713 +01:00 [INF] Now listening on: http://localhost:5298
+2025-12-21 12:25:59.817 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-21 12:25:59.823 +01:00 [INF] Hosting environment: Development
+2025-12-21 12:25:59.830 +01:00 [INF] Content root path: C:\Users\babak\source\repos\SmtOrderManager\SmtOrderManager.Api
+2025-12-21 12:27:43.222 +01:00 [INF] HTTP GET /swagger/index.html responded 200 in 228.7444 ms
+2025-12-21 12:27:43.538 +01:00 [INF] HTTP GET /swagger/favicon-32x32.png responded 200 in 45.5126 ms
+2025-12-21 12:27:43.744 +01:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 260.4282 ms
+2025-12-21 12:27:52.120 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-12-21 12:27:53.972 +01:00 [WRN] The foreign key property 'OrderBoard.BoardId1' was created in shadow state because a conflicting property with the simple name 'BoardId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-12-21 12:27:55.326 +01:00 [INF] HTTP GET /api/boards responded 200 in 3212.9840 ms
+2025-12-21 12:29:44.011 +01:00 [INF] Board created. BoardId="91109456-bceb-4592-8c40-2d376f0751a6" Name=PCB 2
+2025-12-21 12:29:44.019 +01:00 [INF] HTTP POST /api/boards responded 200 in 693.5522 ms
+2025-12-21 12:37:18.644 +01:00 [INF] Application is shutting down...

@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SmtOrderManager.Application.Abstractions;
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
@@ -14,12 +15,14 @@ public sealed class EfOrderService : IOrderService
     private readonly AppDbContext _db;
     private readonly ITimeProvider _time;
     private readonly IJsonSerializer _json;
+    private readonly ILogger<EfOrderService> _logger;
 
-    public EfOrderService(AppDbContext db, ITimeProvider time, IJsonSerializer json)
+    public EfOrderService(AppDbContext db, ITimeProvider time, IJsonSerializer json, ILogger<EfOrderService> logger)
     {
         _db = db;
         _time = time;
         _json = json;
+        _logger = logger;
     }
 
     public async Task<OrderDto> CreateAsync(CreateOrderRequest request, CancellationToken ct)
@@ -27,6 +30,10 @@ public sealed class EfOrderService : IOrderService
         var entity = new Order(request.Name, request.Description, request.OrderDate);
         _db.Orders.Add(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Order created. OrderId={OrderId} Name={Name} OrderDate={OrderDate}",
+            entity.Id, entity.Name, entity.OrderDate);
+
         return ToDto(entity);
     }
 
@@ -46,15 +53,15 @@ public sealed class EfOrderService : IOrderService
         if (!string.IsNullOrWhiteSpace(name))
             q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
 
+        // SQLite limitation: DateTimeOffset cannot be used in ORDER BY server-side.
         var list = await q
             .Include(x => x.BoardLinks)
             .ToListAsync(ct);
 
         return list
-            .OrderByDescending(x => x.OrderDate) // LINQ to Objects
+            .OrderByDescending(x => x.OrderDate)
             .Select(ToDto)
             .ToList();
-
     }
 
     public async Task<OrderDto> UpdateAsync(Guid id, UpdateOrderRequest request, CancellationToken ct)
@@ -68,6 +75,8 @@ public sealed class EfOrderService : IOrderService
         entity.Update(request.Name, request.Description, request.OrderDate);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation("Order updated. OrderId={OrderId}", entity.Id);
+
         return ToDto(entity);
     }
 
@@ -78,6 +87,9 @@ public sealed class EfOrderService : IOrderService
 
         _db.Orders.Remove(entity);
         await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Order deleted. OrderId={OrderId}", id);
+
         return true;
     }
 
@@ -95,6 +107,8 @@ public sealed class EfOrderService : IOrderService
         order.AddBoard(boardId);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation("Board linked to order. OrderId={OrderId} BoardId={BoardId}", orderId, boardId);
+
         return ToDto(order);
     }
 
@@ -109,6 +123,8 @@ public sealed class EfOrderService : IOrderService
         order.RemoveBoard(boardId);
         await _db.SaveChangesAsync(ct);
 
+        _logger.LogInformation("Board unlinked from order. OrderId={OrderId} BoardId={BoardId}", orderId, boardId);
+
         return ToDto(order);
     }
 
@@ -121,15 +137,19 @@ public sealed class EfOrderService : IOrderService
 
         if (order is null) throw new NotFoundException("Order not found.");
 
+        var downloadedAt = _time.UtcNow;
+
         var model = new
         {
-            DownloadedAtUtc = _time.UtcNow,
+            DownloadedAtUtc = downloadedAt,
             Order = ToDto(order)
         };
 
         var json = _json.Serialize(model);
         var content = Encoding.UTF8.GetBytes(json);
-        var fileName = $"order_{order.Id}_{_time.UtcNow:yyyyMMdd_HHmmss}_utc.json";
+        var fileName = $"order_{order.Id}_{downloadedAt:yyyyMMdd_HHmmss}_utc.json";
+
+        _logger.LogInformation("Order downloaded (simulated). OrderId={OrderId} FileName={FileName}", orderId, fileName);
 
         return new DownloadPayload(fileName, "application/json", content);
     }
