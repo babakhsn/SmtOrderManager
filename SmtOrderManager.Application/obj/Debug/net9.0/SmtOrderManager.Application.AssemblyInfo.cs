@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmtOrderManager.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5cfc920db48bdeaa04a4daca3521cc0e20f4d6a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f14519c2b14e399393576c6d1b2348656bff7577")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmtOrderManager.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmtOrderManager.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

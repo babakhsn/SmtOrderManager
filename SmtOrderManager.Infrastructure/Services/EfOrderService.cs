@@ -47,15 +47,39 @@ public sealed class EfOrderService : IOrderService
         return o is null ? null : ToDto(o);
     }
 
-    public async Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, CancellationToken ct)
+    //public async Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, CancellationToken ct)
+    //{
+    //    var q = _db.Orders.AsNoTracking().AsQueryable();
+    //    if (!string.IsNullOrWhiteSpace(name))
+    //        q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
+
+    //    // SQLite limitation: DateTimeOffset cannot be used in ORDER BY server-side.
+    //    var list = await q
+    //        .Include(x => x.BoardLinks)
+    //        .ToListAsync(ct);
+
+    //    return list
+    //        .OrderByDescending(x => x.OrderDate)
+    //        .Select(ToDto)
+    //        .ToList();
+    //}
+
+    public Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+
+    public async Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, Paging paging, CancellationToken ct)
     {
+        var p = paging ?? new Paging();
         var q = _db.Orders.AsNoTracking().AsQueryable();
+
         if (!string.IsNullOrWhiteSpace(name))
             q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
 
-        // SQLite limitation: DateTimeOffset cannot be used in ORDER BY server-side.
+        // Fetch then order in memory due to SQLite DateTimeOffset limitation
         var list = await q
             .Include(x => x.BoardLinks)
+            .Skip(p.NormalizedSkip)
+            .Take(p.NormalizedTake)
             .ToListAsync(ct);
 
         return list
@@ -63,6 +87,7 @@ public sealed class EfOrderService : IOrderService
             .Select(ToDto)
             .ToList();
     }
+
 
     public async Task<OrderDto> UpdateAsync(Guid id, UpdateOrderRequest request, CancellationToken ct)
     {

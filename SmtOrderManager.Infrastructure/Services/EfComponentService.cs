@@ -36,15 +36,15 @@ public sealed class EfComponentService : IComponentService
         return c is null ? null : new ComponentDto(c.Id, c.Name, c.Description, c.Quantity);
     }
 
-    public async Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, CancellationToken ct)
-    {
-        var q = _db.Components.AsNoTracking().AsQueryable();
-        if (!string.IsNullOrWhiteSpace(name))
-            q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
+    //public async Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, CancellationToken ct)
+    //{
+    //    var q = _db.Components.AsNoTracking().AsQueryable();
+    //    if (!string.IsNullOrWhiteSpace(name))
+    //        q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
 
-        var list = await q.OrderBy(x => x.Name).ToListAsync(ct);
-        return list.Select(c => new ComponentDto(c.Id, c.Name, c.Description, c.Quantity)).ToList();
-    }
+    //    var list = await q.OrderBy(x => x.Name).ToListAsync(ct);
+    //    return list.Select(c => new ComponentDto(c.Id, c.Name, c.Description, c.Quantity)).ToList();
+    //}
 
     public async Task<ComponentDto> UpdateAsync(Guid id, UpdateComponentRequest request, CancellationToken ct)
     {
@@ -67,9 +67,31 @@ public sealed class EfComponentService : IComponentService
         _db.Components.Remove(entity);
         await _db.SaveChangesAsync(ct);
 
+
         _logger.LogInformation("Component deleted. ComponentId={ComponentId}", id);
 
 
         return true;
     }
+
+    public Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+
+    public async Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, Paging paging, CancellationToken ct)
+    {
+        var p = paging ?? new Paging();
+        var q = _db.Components.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
+            q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
+
+        var list = await q
+            .OrderBy(x => x.Name)
+            .Skip(p.NormalizedSkip)
+            .Take(p.NormalizedTake)
+            .ToListAsync(ct);
+
+        return list.Select(c => new ComponentDto(c.Id, c.Name, c.Description, c.Quantity)).ToList();
+    }
+
 }

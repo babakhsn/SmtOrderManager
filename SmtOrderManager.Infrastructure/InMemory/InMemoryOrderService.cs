@@ -31,7 +31,12 @@ public sealed class InMemoryOrderService : IOrderService
         => Task.FromResult(_store.Orders.TryGetValue(id, out var o) ? Mapping.ToDto(o) : null);
 
     public Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+    public Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, Paging paging, CancellationToken ct)
     {
+
+        var p = paging ?? new Paging();
+
         var query = _store.Orders.Values.AsEnumerable();
         if (!string.IsNullOrWhiteSpace(name))
             query = query.Where(x => x.Name.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase));

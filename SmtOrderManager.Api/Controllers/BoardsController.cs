@@ -24,8 +24,13 @@ public sealed class BoardsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<BoardDto>>> Search([FromQuery] string? name, CancellationToken ct)
-        => Ok(await _service.SearchAsync(name, ct));
+    public async Task<ActionResult<IReadOnlyList<BoardDto>>> Search(
+    [FromQuery] string? name,
+    [FromQuery] int skip = 0,
+    [FromQuery] int take = 50,
+    CancellationToken ct = default)
+    => Ok(await _service.SearchAsync(name, new Paging(skip, take), ct));
+
 
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<BoardDto>> Update(Guid id, [FromBody] UpdateBoardRequest request, CancellationToken ct)

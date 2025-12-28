@@ -6,7 +6,10 @@ public interface IOrderService
 {
     Task<OrderDto> CreateAsync(CreateOrderRequest request, CancellationToken ct);
     Task<OrderDto?> GetByIdAsync(Guid id, CancellationToken ct);
+
     Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, CancellationToken ct);
+    Task<IReadOnlyList<OrderDto>> SearchAsync(string? name, Paging paging, CancellationToken ct);
+
     Task<OrderDto> UpdateAsync(Guid id, UpdateOrderRequest request, CancellationToken ct);
     Task<bool> DeleteAsync(Guid id, CancellationToken ct);
 

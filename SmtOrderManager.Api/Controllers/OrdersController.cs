@@ -24,8 +24,13 @@ public sealed class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<OrderDto>>> Search([FromQuery] string? name, CancellationToken ct)
-        => Ok(await _service.SearchAsync(name, ct));
+    public async Task<ActionResult<IReadOnlyList<OrderDto>>> Search(
+    [FromQuery] string? name,
+    [FromQuery] int skip = 0,
+    [FromQuery] int take = 50,
+    CancellationToken ct = default)
+    => Ok(await _service.SearchAsync(name, new Paging(skip, take), ct));
+
 
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<OrderDto>> Update(Guid id, [FromBody] UpdateOrderRequest request, CancellationToken ct)

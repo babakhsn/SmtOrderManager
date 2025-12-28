@@ -22,7 +22,12 @@ public sealed class InMemoryComponentService : IComponentService
         => Task.FromResult(_store.Components.TryGetValue(id, out var c) ? Mapping.ToDto(c) : null);
 
     public Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+    public Task<IReadOnlyList<ComponentDto>> SearchAsync(string? name, Paging paging, CancellationToken ct)
     {
+
+        var p = paging ?? new Paging();
+
         var query = _store.Components.Values.AsEnumerable();
         if (!string.IsNullOrWhiteSpace(name))
             query = query.Where(x => x.Name.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase));

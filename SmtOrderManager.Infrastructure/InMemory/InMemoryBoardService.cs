@@ -21,8 +21,14 @@ public sealed class InMemoryBoardService : IBoardService
     public Task<BoardDto?> GetByIdAsync(Guid id, CancellationToken ct)
         => Task.FromResult(_store.Boards.TryGetValue(id, out var b) ? Mapping.ToDto(b) : null);
 
+
     public Task<IReadOnlyList<BoardDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+    public Task<IReadOnlyList<BoardDto>> SearchAsync(string? name,Paging paging, CancellationToken ct)
     {
+
+        var p = paging ?? new Paging();
+
         var query = _store.Boards.Values.AsEnumerable();
         if (!string.IsNullOrWhiteSpace(name))
             query = query.Where(x => x.Name.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase));

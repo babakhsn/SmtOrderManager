@@ -40,19 +40,41 @@ public sealed class EfBoardService : IBoardService
         return b is null ? null : ToDto(b);
     }
 
-    public async Task<IReadOnlyList<BoardDto>> SearchAsync(string? name, CancellationToken ct)
+    //public async Task<IReadOnlyList<BoardDto>> SearchAsync(string? name, CancellationToken ct)
+    //{
+    //    var q = _db.Boards.AsNoTracking().AsQueryable();
+    //    if (!string.IsNullOrWhiteSpace(name))
+    //        q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
+
+    //    var list = await q
+    //        .OrderBy(x => x.Name)
+    //        .Include(x => x.ComponentLinks)
+    //        .ToListAsync(ct);
+
+    //    return list.Select(ToDto).ToList();
+    //}
+
+    public Task<IReadOnlyList<BoardDto>> SearchAsync(string? name, CancellationToken ct)
+    => SearchAsync(name, new Paging(), ct);
+
+    public async Task<IReadOnlyList<BoardDto>> SearchAsync(string? name, Paging paging, CancellationToken ct)
     {
+        var p = paging ?? new Paging();
         var q = _db.Boards.AsNoTracking().AsQueryable();
+
         if (!string.IsNullOrWhiteSpace(name))
             q = q.Where(x => EF.Functions.Like(x.Name, $"%{name.Trim()}%"));
 
         var list = await q
             .OrderBy(x => x.Name)
+            .Skip(p.NormalizedSkip)
+            .Take(p.NormalizedTake)
             .Include(x => x.ComponentLinks)
             .ToListAsync(ct);
 
         return list.Select(ToDto).ToList();
     }
+
 
     public async Task<BoardDto> UpdateAsync(Guid id, UpdateBoardRequest request, CancellationToken ct)
     {
