@@ -1,0 +1,109 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Orders.DetailsModel
+
+@if (Model.ModelData is null)
+{
+    <p>Not found.</p>
+    return;
+}
+
+@{
+    var d = Model.ModelData;
+}
+
+<h2>Order Details</h2>
+<p>
+    <a href="/Orders">Back to Orders</a> |
+    <a href="/Orders/Download?id=@Model.Id">Download JSON</a> |
+    <a href="/Account/Logout">Logout</a>
+</p>
+
+<h3>@d.Order.Name</h3>
+<p>@d.Order.Description</p>
+
+<ul>
+    <li><strong>OrderId:</strong> @d.Order.Id</li>
+    <li><strong>OrderDate:</strong> @d.Order.OrderDate</li>
+    <li><strong>DownloadedAtUtc:</strong> @d.DownloadedAtUtc</li>
+</ul>
+
+<hr />
+
+<h3>Boards</h3>
+
+@if (d.Boards.Count == 0)
+{
+    <p>No boards linked.</p>
+}
+else
+{
+    @foreach (var b in d.Boards)
+    {
+        <div style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+            <h4>@b.Name</h4>
+            <div><strong>BoardId:</strong> @b.Id</div>
+            <div><strong>Size:</strong> @b.Length x @b.Width</div>
+            <div>@b.Description</div>
+
+            <h5 style="margin-top:10px;">Placements</h5>
+
+            @if (b.Placements.Count == 0)
+            {
+                <p>No components linked.</p>
+            }
+            else
+            {
+                <table border="1" cellpadding="6" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>ComponentId</th>
+                            <th>Placement Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in b.Placements.OrderBy(x => x.ComponentName))
+                        {
+                            <tr>
+                                <td>@p.ComponentName</td>
+                                <td>@p.ComponentId</td>
+                                <td>@p.PlacementQuantity</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
+}
+
+<hr />
+
+<h3>BOM (Aggregated)</h3>
+
+@if (d.Bom.Count == 0)
+{
+    <p>BOM is empty.</p>
+}
+else
+{
+    <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>ComponentId</th>
+                <th>Total Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in d.Bom.OrderBy(x => x.ComponentName))
+            {
+                <tr>
+                    <td>@line.ComponentName</td>
+                    <td>@line.ComponentId</td>
+                    <td>@line.TotalQuantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

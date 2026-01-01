@@ -1,0 +1,73 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Boards.ComponentsModel
+
+@if (Model.Board is null)
+{
+    <p>Not found.</p>
+    return;
+}
+
+<h2>Board Components</h2>
+<p>
+    <a href="/Boards">Back to Boards</a> |
+    <a href="/Account/Logout">Logout</a>
+</p>
+
+<h3>@Model.Board.Name</h3>
+<p>@Model.Board.Description</p>
+
+<h4>Linked Components (IDs)</h4>
+@if (Model.Board.ComponentIds.Count == 0)
+{
+    <p>No components linked.</p>
+}
+else
+{
+    <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr><th>ComponentId</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var cid in Model.Board.ComponentIds)
+            {
+                <tr>
+                    <td>@cid</td>
+                    <td>
+                        <form method="post" asp-page-handler="Remove" style="display:inline;">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" name="RemoveComponentId" value="@cid" />
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h4>Link a Component</h4>
+<form method="post" asp-page-handler="Link">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div>
+        <label>Component</label><br />
+        <select asp-for="LinkInput.ComponentId">
+            <option value="">-- select --</option>
+            @foreach (var c in Model.AllComponents)
+            {
+                <option value="@c.Id">@c.Name (@c.Id)</option>
+            }
+        </select>
+        <span asp-validation-for="LinkInput.ComponentId"></span>
+    </div>
+
+    <div>
+        <label>Placement Quantity</label><br />
+        <input asp-for="LinkInput.PlacementQuantity" />
+        <span asp-validation-for="LinkInput.PlacementQuantity"></span>
+    </div>
+
+    <button type="submit">Link</button>
+</form>

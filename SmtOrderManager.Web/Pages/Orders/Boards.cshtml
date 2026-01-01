@@ -1,0 +1,67 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Orders.BoardsModel
+
+@if (Model.Order is null)
+{
+    <p>Not found.</p>
+    return;
+}
+
+<h2>Order Boards</h2>
+<p>
+    <a href="/Orders">Back to Orders</a> |
+    <a href="/Account/Logout">Logout</a>
+</p>
+
+<h3>@Model.Order.Name</h3>
+<p>@Model.Order.Description</p>
+
+<h4>Linked Boards (IDs)</h4>
+@if (Model.Order.BoardIds.Count == 0)
+{
+    <p>No boards linked.</p>
+}
+else
+{
+    <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr><th>BoardId</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var bid in Model.Order.BoardIds)
+            {
+                <tr>
+                    <td>@bid</td>
+                    <td>
+                        <form method="post" asp-page-handler="Remove" style="display:inline;">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" name="RemoveBoardId" value="@bid" />
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h4>Link a Board</h4>
+<form method="post" asp-page-handler="Link">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div>
+        <label>Board</label><br />
+        <select asp-for="LinkInput.BoardId">
+            <option value="">-- select --</option>
+            @foreach (var b in Model.AllBoards)
+            {
+                <option value="@b.Id">@b.Name (@b.Id)</option>
+            }
+        </select>
+        <span asp-validation-for="LinkInput.BoardId"></span>
+    </div>
+
+    <button type="submit">Link</button>
+</form>

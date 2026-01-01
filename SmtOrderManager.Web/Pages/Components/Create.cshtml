@@ -1,0 +1,22 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Components.CreateModel
+
+<h2>Create Component</h2>
+<form method="post">
+    <div>
+        <label>Name</label><br />
+        <input asp-for="Input.Name" />
+        <span asp-validation-for="Input.Name"></span>
+    </div>
+    <div>
+        <label>Description</label><br />
+        <input asp-for="Input.Description" />
+    </div>
+    <div>
+        <label>Quantity</label><br />
+        <input asp-for="Input.Quantity" />
+        <span asp-validation-for="Input.Quantity"></span>
+    </div>
+    <button type="submit">Save</button>
+    <a href="/Components">Cancel</a>
+</form>

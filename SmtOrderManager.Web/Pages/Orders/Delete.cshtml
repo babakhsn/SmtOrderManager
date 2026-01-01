@@ -1,0 +1,17 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Orders.DeleteModel
+
+<h2>Delete Order</h2>
+
+@if (Model.Item is null)
+{
+    <p>Not found.</p>
+}
+else
+{
+    <p>Are you sure you want to delete <strong>@Model.Item.Name</strong>?</p>
+    <form method="post">
+        <button type="submit">Yes, delete</button>
+        <a href="/Orders">Cancel</a>
+    </form>
+}

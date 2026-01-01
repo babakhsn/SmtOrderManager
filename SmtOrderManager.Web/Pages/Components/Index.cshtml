@@ -1,0 +1,37 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Components.IndexModel
+
+<h2>Components</h2>
+<p><a href="/">Home</a> | <a href="/Account/Logout">Logout</a></p>
+
+<form method="get">
+    <input name="name" value="@Model.Name" placeholder="Search by name..." />
+    <button type="submit">Search</button>
+    <a href="/Components/Create">Create</a>
+</form>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Items)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>@c.Description</td>
+                <td>@c.Quantity</td>
+                <td>
+                    <a href="/Components/Edit?id=@c.Id">Edit</a>
+                    |
+                    <a href="/Components/Delete?id=@c.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Boards.CreateModel
+
+<h2>Create Board</h2>
+
+<form method="post">
+    <div>
+        <label>Name</label><br />
+        <input asp-for="Input.Name" />
+        <span asp-validation-for="Input.Name"></span>
+    </div>
+    <div>
+        <label>Description</label><br />
+        <input asp-for="Input.Description" />
+    </div>
+    <div>
+        <label>Length</label><br />
+        <input asp-for="Input.Length" />
+        <span asp-validation-for="Input.Length"></span>
+    </div>
+    <div>
+        <label>Width</label><br />
+        <input asp-for="Input.Width" />
+        <span asp-validation-for="Input.Width"></span>
+    </div>
+
+    <button type="submit">Save</button>
+    <a href="/Boards">Cancel</a>
+</form>

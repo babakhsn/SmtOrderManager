@@ -1,0 +1,24 @@
+﻿@page
+@model SmtOrderManager.Web.Pages.Orders.EditModel
+
+<h2>Edit Order</h2>
+
+<form method="post">
+    <div>
+        <label>Name</label><br />
+        <input asp-for="Input.Name" />
+        <span asp-validation-for="Input.Name"></span>
+    </div>
+    <div>
+        <label>Description</label><br />
+        <input asp-for="Input.Description" />
+    </div>
+    <div>
+        <label>Order Date (UTC)</label><br />
+        <input asp-for="Input.OrderDate" />
+        <span asp-validation-for="Input.OrderDate"></span>
+    </div>
+
+    <button type="submit">Save</button>
+    <a href="/Orders">Cancel</a>
+</form>

@@ -1,0 +1,14 @@
+﻿@page
+@using System.Security.Claims
+@{
+    var username = User.FindFirstValue(ClaimTypes.Name) ?? "unknown";
+}
+
+<h2>SMT Order Manager</h2>
+<p>Logged in as <strong>@username</strong> | <a href="/Account/Logout">Logout</a></p>
+
+<ul>
+    <li><a href="/Components">Components</a></li>
+    <li><a href="/Boards">Boards</a></li>
+    <li><a href="/Orders">Orders</a></li>
+</ul>
