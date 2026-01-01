@@ -40,3 +40,4 @@ packages/
 coverage/
 *.coverage
 *.coveragexml
+/SmtOrderManager.Api/smt_orders.db

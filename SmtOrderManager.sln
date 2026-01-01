@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		..\..\..\Downloads\Clean Architecture Diagram.png = ..\..\..\Downloads\Clean Architecture Diagram.png
 		docker-compose.yml = docker-compose.yml
 		..\..\..\Downloads\Domain Relationship Diagram.png = ..\..\..\Downloads\Domain Relationship Diagram.png
 		README.md = README.md
@@ -25,6 +26,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtOrderManager.IntegrationTests", "SmtOrderManager.IntegrationTests\SmtOrderManager.IntegrationTests.csproj", "{425DE4D4-682D-435C-BCF3-0CAB9067A143}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtOrderManager.Web", "SmtOrderManager.Web\SmtOrderManager.Web.csproj", "{4CB224A1-06DF-41C7-8E0C-2E644D259C37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{80A0CACF-BADF-456A-909D-548B58C957BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{608961A5-6C7B-43D6-AB96-8405B860B589}"
+	ProjectSection(SolutionItems) = preProject
+		ci.yml = ci.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +131,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{608961A5-6C7B-43D6-AB96-8405B860B589} = {80A0CACF-BADF-456A-909D-548B58C957BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC29D257-9C6F-4DEC-B947-D512DD5353F3}

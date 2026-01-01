@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SmtOrderManager.Api.Middleware;
 using SmtOrderManager.Infrastructure.DependencyInjection;
 using SmtOrderManager.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using SmtOrderManager.Infrastructure.Seeding;
 
 
 
@@ -57,6 +58,11 @@ if (app.Configuration.GetValue<bool>("RunMigrationsOnStartup"))
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+}
+
+if (app.Environment.IsDevelopment() && app.Configuration.GetValue<bool>("SeedData:Enabled"))
+{
+    await AppDbSeeder.SeedAsync(app.Services);
 }
 
 
