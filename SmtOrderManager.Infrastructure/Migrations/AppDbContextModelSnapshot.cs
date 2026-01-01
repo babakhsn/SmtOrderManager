@@ -118,14 +118,9 @@ namespace SmtOrderManager.Infrastructure.Migrations
                     b.Property<Guid>("BoardId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("BoardId1")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("OrderId", "BoardId");
 
                     b.HasIndex("BoardId");
-
-                    b.HasIndex("BoardId1");
 
                     b.ToTable("OrderBoards", (string)null);
                 });
@@ -148,14 +143,10 @@ namespace SmtOrderManager.Infrastructure.Migrations
             modelBuilder.Entity("SmtOrderManager.Domain.Orders.OrderBoard", b =>
                 {
                     b.HasOne("SmtOrderManager.Domain.Boards.Board", null)
-                        .WithMany()
+                        .WithMany("OrderLinks")
                         .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SmtOrderManager.Domain.Boards.Board", null)
-                        .WithMany("OrderLinks")
-                        .HasForeignKey("BoardId1");
 
                     b.HasOne("SmtOrderManager.Domain.Orders.Order", null)
                         .WithMany("BoardLinks")

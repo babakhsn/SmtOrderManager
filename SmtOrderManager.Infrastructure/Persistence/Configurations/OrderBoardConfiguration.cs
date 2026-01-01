@@ -16,14 +16,14 @@ internal sealed class OrderBoardConfiguration : IEntityTypeConfiguration<OrderBo
         builder.Property(x => x.OrderId).IsRequired();
         builder.Property(x => x.BoardId).IsRequired();
 
-        builder.HasOne<Order>()
-            .WithMany()
-            .HasForeignKey(x => x.OrderId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //builder.HasOne<Order>()
+        //    .WithMany()
+        //    .HasForeignKey(x => x.OrderId)
+        //    .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Board>()
-            .WithMany()
-            .HasForeignKey(x => x.BoardId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //builder.HasOne<Board>()
+        //    .WithMany()
+        //    .HasForeignKey(x => x.BoardId)
+        //    .OnDelete(DeleteBehavior.Cascade);
     }
 }

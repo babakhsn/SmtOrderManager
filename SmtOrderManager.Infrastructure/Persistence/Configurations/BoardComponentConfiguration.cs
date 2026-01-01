@@ -17,14 +17,14 @@ internal sealed class BoardComponentConfiguration : IEntityTypeConfiguration<Boa
         builder.Property(x => x.ComponentId).IsRequired();
         builder.Property(x => x.PlacementQuantity).IsRequired();
 
-        builder.HasOne<Board>()
-            .WithMany()
-            .HasForeignKey(x => x.BoardId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //builder.HasOne<Board>()
+        //    .WithMany()
+        //    .HasForeignKey(x => x.BoardId)
+        //    .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Component>()
-            .WithMany()
-            .HasForeignKey(x => x.ComponentId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //builder.HasOne<Component>()
+        //    .WithMany()
+        //    .HasForeignKey(x => x.ComponentId)
+        //    .OnDelete(DeleteBehavior.Cascade);
     }
 }
