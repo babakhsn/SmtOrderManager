@@ -1,6 +1,42 @@
-# Visual Studio
-.vs/
-
-# Build output
+# Build outputs
 bin/
 obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS / VS Code
+.vs/
+.vscode/
+
+# Rider
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and local DB
+logs/
+*.db
+*.db-shm
+*.db-wal
+
+# Test results
+TestResults/
+
+# dotnet tools
+.dotnet/
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml

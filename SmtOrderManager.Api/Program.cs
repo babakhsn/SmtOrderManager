@@ -1,6 +1,9 @@
-using SmtOrderManager.Infrastructure.DependencyInjection;
-using SmtOrderManager.Api.Middleware;
 using Serilog;
+using SmtOrderManager.Api.Middleware;
+using SmtOrderManager.Infrastructure.DependencyInjection;
+using SmtOrderManager.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +45,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    db.Database.Migrate();
+//}
+
+if (app.Configuration.GetValue<bool>("RunMigrationsOnStartup"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+
 
 app.UseHttpsRedirection();
 app.MapControllers();

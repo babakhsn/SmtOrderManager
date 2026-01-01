@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: SmtOrderManager.Api/Dockerfile
+    container_name: smt-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__AppDb=Data Source=/data/smt_orders.db
+    volumes:
+      - smt_db:/data
+
+  web:
+    build:
+      context: .
+      dockerfile: SmtOrderManager.Web/Dockerfile
+    container_name: smt-web
+    depends_on:
+      - api
+    ports:
+      - "5002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Api__BaseUrl=http://api:8080
+
+volumes:
+  smt_db:
