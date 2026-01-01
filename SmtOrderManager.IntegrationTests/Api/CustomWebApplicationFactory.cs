@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,10 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private SqliteConnection? _connection;
 
-    protected override IHost CreateHost(IHostBuilder builder)
+    
+
+
+protected override IHost CreateHost(IHostBuilder builder)
     {
         // Keep a single open SQLite in-memory connection for the host lifetime
         _connection = new SqliteConnection("Data Source=:memory:");
@@ -56,5 +60,13 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         // Optional: force environment for consistent ProblemDetails behavior in tests
         builder.UseEnvironment(Environments.Development);
+
+        builder.ConfigureAppConfiguration((context, config) =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["RunMigrationsOnStartup"] = "false"
+            });
+        });
     }
 }
