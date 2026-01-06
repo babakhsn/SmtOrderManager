@@ -30,6 +30,7 @@ public sealed record BoardPlacementDto(
     int PlacementQuantity
 );
 
+//BOM : Bill of Materials.
 public sealed record BomLineDto(
     Guid ComponentId,
     string ComponentName,

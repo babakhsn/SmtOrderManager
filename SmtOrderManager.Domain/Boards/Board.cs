@@ -10,6 +10,7 @@ public sealed class Board : Entity
     public double Length { get; private set; }
     public double Width { get; private set; }
 
+    //encapsulation and invariants pattern
     private readonly List<OrderBoard> _orderLinks = [];
     public IReadOnlyCollection<OrderBoard> OrderLinks => _orderLinks.AsReadOnly();
 

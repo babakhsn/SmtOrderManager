@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SmtOrderManager.Api.Middleware;
@@ -9,6 +12,17 @@ using SmtOrderManager.Infrastructure.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Share Data Protection keys with the Web UI so this API can validate the forwarded auth cookie.
+// Use the same application name + key ring path in both projects.
+var keyPathSetting = builder.Configuration["DataProtection:KeyPath"] ?? "../.keys";
+var keyRingPath = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, keyPathSetting));
+Directory.CreateDirectory(keyRingPath);
+
+builder.Services
+    .AddDataProtection()
+    .SetApplicationName("SmtOrderManager")
+    .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+
 // Serilog configuration (reads from appsettings.json / appsettings.Development.json)
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -19,6 +33,36 @@ builder.Host.UseSerilog();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Cookie authentication so the API can authenticate the same cookie issued by the Web UI.
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "SmtOrderManager.Auth";
+
+        // APIs should not redirect to HTML pages.
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnRedirectToLogin = ctx =>
+            {
+                ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            },
+            OnRedirectToAccessDenied = ctx =>
+            {
+                ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // Infrastructure (EF + SQLite)
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -68,6 +112,10 @@ if (app.Environment.IsDevelopment() && app.Configuration.GetValue<bool>("SeedDat
 
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
@@ -6,6 +7,7 @@ namespace SmtOrderManager.Api.Controllers;
 
 [ApiController]
 [Route("api/boards")]
+[Authorize]
 public sealed class BoardsController : ControllerBase
 {
     private readonly IBoardService _service;

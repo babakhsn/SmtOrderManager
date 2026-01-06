@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmtOrderManager.Application.Contracts;
 using SmtOrderManager.Application.Services;
@@ -6,6 +7,8 @@ namespace SmtOrderManager.Api.Controllers;
 
 [ApiController]
 [Route("api/orders")]
+[Authorize]
+
 public sealed class OrdersController : ControllerBase
 {
     private readonly IOrderService _service;

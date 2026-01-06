@@ -1,8 +1,20 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using SmtOrderManager.Web.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Share Data Protection keys with the API so the forwarded auth cookie can be validated there.
+// Use the same application name + key ring path in both projects.
+var keyPathSetting = builder.Configuration["DataProtection:KeyPath"] ?? "../.keys";
+var keyRingPath = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, keyPathSetting));
+Directory.CreateDirectory(keyRingPath);
+
+builder.Services
+    .AddDataProtection()
+    .SetApplicationName("SmtOrderManager")
+    .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
 
 builder.Services.AddRazorPages();
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("Auth"));
@@ -22,6 +34,7 @@ builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.Name = "SmtOrderManager.Auth";
         options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
         options.AccessDeniedPath = "/Account/AccessDenied";
